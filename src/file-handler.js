@@ -9,30 +9,26 @@
 // non-blocking approach file handling
 const fs = require("fs");
 
-fs.readFile(`${__dirname}/../files/input.txt`, "utf-8", (err, content1) => {
+fs.readFile(`${__dirname}/../data/input.txt`, "utf-8", (err, content1) => {
   if (err) {
     console.warn(err);
   } else {
     console.info("non-blocking callback 1: ", content1);
-    fs.readFile(
-      `${__dirname}/../files/input1.txt`,
-      "utf-8",
-      (err, content2) => {
-        console.info("non-blocking callback 2: ", content2);
-        if (err) {
-          console.warn(err);
-        } else {
-          fs.writeFile(
-            `${__dirname}/../files/output.txt`,
-            `${content1}\n${content2}`,
-            "utf8",
-            (callback) => {
-              console.info("new file has been written");
-            }
-          );
-        }
+    fs.readFile(`${__dirname}/../data/input1.txt`, "utf-8", (err, content2) => {
+      console.info("non-blocking callback 2: ", content2);
+      if (err) {
+        console.warn(err);
+      } else {
+        fs.writeFile(
+          `${__dirname}/../data/output.txt`,
+          `${content1}\n${content2}`,
+          "utf8",
+          (callback) => {
+            console.info("new file has been written");
+          }
+        );
       }
-    );
+    });
   }
 });
 console.log("non-blocking testing. this line runs anyway. no waiting!");
