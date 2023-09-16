@@ -4,7 +4,7 @@ const url = require("url");
 const fs = require("fs");
 
 const productData = fs.readFileSync(
-  `${__dirname}/../data/product-data.json`,
+  `${__dirname}/../../data/product-data.json`,
   "utf8"
 );
 const productObj = JSON.parse(productData);
