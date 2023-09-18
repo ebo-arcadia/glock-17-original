@@ -11,8 +11,8 @@ const replaceHtmlTemplateWithProductData = (card, product) => {
   output = output.replace(/{%productQuantity%}/g, product.quantity);
   output = output.replace(/{%productDescription%}/g, product.description);
   output = output.replace(/{%productId%}/g, product.id);
-  if (!output.organic)
-    output = output.replace(/{%Not_organic%}/g, "not-organic");
+  console.log(product.organic);
+  if (!product.organic) output = output.replace(/{%organic%}/g, "not-organic");
   return output;
 };
 
@@ -38,11 +38,11 @@ const httpServer = http.createServer((request, response) => {
   let path = request.url;
   if (path === "/" || path === "/home") {
     response.writeHead(200, { "Content-type": "text/html" });
-    const productCard = productObj.map((product) =>
-      replaceHtmlTemplateWithProductData(card, product)
-    );
-    console.info(productCard);
-    response.end(overview);
+    const productCard = productObj
+      .map((product) => replaceHtmlTemplateWithProductData(card, product))
+      .join("");
+    const output = overview.replace("{%productCard%}", productCard);
+    response.end(output);
   } else if (path === "/api") {
     response.writeHead(200, { "Content-type": "application/json" });
     response.end(productData);
