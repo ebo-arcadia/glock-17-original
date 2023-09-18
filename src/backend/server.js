@@ -3,6 +3,19 @@ const http = require("http");
 const url = require("url");
 const fs = require("fs");
 
+const replaceHtmlTemplateWithProductData = (card, product) => {
+  let output = card.replace(/{%productName%}/g, product.productName);
+  output = output.replace(/{%productImage%}/g, product.image);
+  output = output.replace(/{%productPrice%}/g, product.price);
+  output = output.replace(/{%productFrom%}/g, product.from);
+  output = output.replace(/{%productQuantity%}/g, product.quantity);
+  output = output.replace(/{%productDescription%}/g, product.description);
+  output = output.replace(/{%productId%}/g, product.id);
+  if (!output.organic)
+    output = output.replace(/{%Not_organic%}/g, "not-organic");
+  return output;
+};
+
 const productData = fs.readFileSync(
   `${__dirname}/../../data/product-data.json`,
   "utf8"
@@ -24,7 +37,12 @@ const productObj = JSON.parse(productData);
 const httpServer = http.createServer((request, response) => {
   let path = request.url;
   if (path === "/" || path === "/home") {
-    response.end("Home page");
+    response.writeHead(200, { "Content-type": "text/html" });
+    const productCard = productObj.map((product) =>
+      replaceHtmlTemplateWithProductData(card, product)
+    );
+    console.info(productCard);
+    response.end(overview);
   } else if (path === "/api") {
     response.writeHead(200, { "Content-type": "application/json" });
     response.end(productData);
