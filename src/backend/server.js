@@ -7,6 +7,18 @@ const productData = fs.readFileSync(
   `${__dirname}/../../data/product-data.json`,
   "utf8"
 );
+const overview = fs.readFileSync(
+  `${__dirname}/../../src/interface/overview.html`,
+  "utf8"
+);
+const product = fs.readFileSync(
+  `${__dirname}/../../src/interface/product.html`,
+  "utf8"
+);
+const card = fs.readFileSync(
+  `${__dirname}/../../src/interface/card.html`,
+  "utf8"
+);
 const productObj = JSON.parse(productData);
 
 const httpServer = http.createServer((request, response) => {
