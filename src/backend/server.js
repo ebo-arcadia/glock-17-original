@@ -10,8 +10,8 @@ const replaceHtmlTemplateWithProductData = (card, product) => {
   output = output.replace(/{%productFrom%}/g, product.from);
   output = output.replace(/{%productQuantity%}/g, product.quantity);
   output = output.replace(/{%productDescription%}/g, product.description);
+  console.log("product id", product.id);
   output = output.replace(/{%productId%}/g, product.id);
-  console.log(product.organic);
   if (!product.organic) output = output.replace(/{%organic%}/g, "not-organic");
   return output;
 };
@@ -35,15 +35,19 @@ const card = fs.readFileSync(
 const productObj = JSON.parse(productData);
 
 const httpServer = http.createServer((request, response) => {
-  let path = request.url;
-  if (path === "/" || path === "/home") {
+  const path = url.parse(request.url, true);
+  const { query, pathname } = url.parse(request.url, true);
+  console.log(path);
+  if (pathname === "/" || pathname === "/home") {
     response.writeHead(200, { "Content-type": "text/html" });
     const productCard = productObj
       .map((product) => replaceHtmlTemplateWithProductData(card, product))
       .join("");
     const output = overview.replace("{%productCard%}", productCard);
     response.end(output);
-  } else if (path === "/api") {
+  } else if (pathname === "/product") {
+    response.end("Product page!");
+  } else if (pathname === "/api") {
     response.writeHead(200, { "Content-type": "application/json" });
     response.end(productData);
   } else {
