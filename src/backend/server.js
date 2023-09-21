@@ -2,19 +2,7 @@
 const http = require("http");
 const url = require("url");
 const fs = require("fs");
-
-const replaceHtmlTemplateWithProductData = (card, product) => {
-  let output = card.replace(/{%productName%}/g, product.productName);
-  output = output.replace(/{%productImage%}/g, product.image);
-  output = output.replace(/{%productPrice%}/g, product.price);
-  output = output.replace(/{%productFrom%}/g, product.from);
-  output = output.replace(/{%productQuantity%}/g, product.quantity);
-  output = output.replace(/{%productDescription%}/g, product.description);
-  console.log("product id", product.id);
-  output = output.replace(/{%productId%}/g, product.id);
-  if (!product.organic) output = output.replace(/{%organic%}/g, "not-organic");
-  return output;
-};
+const replaceHtmlTemplateWithProductData = require("../../modules/replaceHtmlTemplateWithProductData");
 
 const productData = fs.readFileSync(
   `${__dirname}/../../data/product-data.json`,
@@ -24,7 +12,7 @@ const overview = fs.readFileSync(
   `${__dirname}/../../src/interface/overview.html`,
   "utf8"
 );
-const product = fs.readFileSync(
+const productView = fs.readFileSync(
   `${__dirname}/../../src/interface/product.html`,
   "utf8"
 );
@@ -46,7 +34,12 @@ const httpServer = http.createServer((request, response) => {
     const output = overview.replace("{%productCard%}", productCard);
     response.end(output);
   } else if (pathname === "/product") {
-    response.end("Product page!");
+    response.writeHead(200, {
+      "Content-type": "text/html",
+    });
+    const productId = productObj[query.id];
+    const output = replaceHtmlTemplateWithProductData(productView, productId);
+    response.end(output);
   } else if (pathname === "/api") {
     response.writeHead(200, { "Content-type": "application/json" });
     response.end(productData);
