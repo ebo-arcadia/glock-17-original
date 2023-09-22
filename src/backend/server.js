@@ -46,7 +46,7 @@ const httpServer = http.createServer((request, response) => {
   } else {
     response.writeHead(404, {
       "Content-type": "text/html",
-      "personal-header": "personal header",
+      "customized-header": "customized header",
     });
     response.end("<h1> Page not found! </h1>");
   }
