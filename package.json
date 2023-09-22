@@ -1,0 +1,19 @@
+{
+  "name": "glock-17-original",
+  "version": "1.0.0",
+  "description": "simple backend API made with node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebo-arcadia/glock-17-original.git"
+  },
+  "author": "Ebo Arcadia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebo-arcadia/glock-17-original/issues"
+  },
+  "homepage": "https://github.com/ebo-arcadia/glock-17-original#readme"
+}
