@@ -25,11 +25,10 @@ const productObj = JSON.parse(productData);
 const sluggedProductName = productObj.map((product) =>
   slugify(product.productName, { lower: true })
 );
-console.warn(sluggedProductName);
 
 const httpServer = http.createServer((request, response) => {
   const path = url.parse(request.url, true);
-  const { query, pathname } = url.parse(request.url, true);
+  const { query, pathname } = path;
   if (pathname === "/" || pathname === "/home") {
     response.writeHead(200, { "Content-type": "text/html" });
     const productCard = productObj
@@ -42,6 +41,8 @@ const httpServer = http.createServer((request, response) => {
       "Content-type": "text/html",
     });
     const productId = productObj[query.id];
+    const slug = sluggedProductName[productId];
+    console.log(slug);
     const output = replaceHtmlTemplateWithProductData(productView, productId);
     response.end(output);
   } else if (pathname === "/api") {
