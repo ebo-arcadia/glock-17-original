@@ -5,7 +5,7 @@ module.exports = (card, product) => {
   output = output.replace(/{%productFrom%}/g, product.from);
   output = output.replace(/{%productQuantity%}/g, product.quantity);
   output = output.replace(/{%productDescription%}/g, product.description);
-  console.log("product id", product.id);
+  output = output.replace(/{%productNutrient%}/g, product.nutrients);
   output = output.replace(/{%productId%}/g, product.id);
   if (!product.organic) output = output.replace(/{%organic%}/g, "not-organic");
   return output;
