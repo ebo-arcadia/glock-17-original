@@ -2,6 +2,7 @@
 const http = require("http");
 const url = require("url");
 const fs = require("fs");
+const slugify = require("slugify");
 const replaceHtmlTemplateWithProductData = require("../../modules/replaceHtmlTemplateWithProductData");
 
 const productData = fs.readFileSync(
@@ -21,11 +22,14 @@ const card = fs.readFileSync(
   "utf8"
 );
 const productObj = JSON.parse(productData);
+const sluggedProductName = productObj.map((product) =>
+  slugify(product.productName, { lower: true })
+);
+console.warn(sluggedProductName);
 
 const httpServer = http.createServer((request, response) => {
   const path = url.parse(request.url, true);
   const { query, pathname } = url.parse(request.url, true);
-  console.log(path);
   if (pathname === "/" || pathname === "/home") {
     response.writeHead(200, { "Content-type": "text/html" });
     const productCard = productObj
